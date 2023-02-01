@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".LogIn.SignUpFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        >
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/backNavigation_imageButton"
+            android:layout_alignParentStart="true"
+            android:background="@color/white"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/ic_back_arrow"
+
+            />
+
+        <TextView
+            android:id="@+id/signUpTitle_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif-monospace"
+            android:text="Sign up"
+            android:layout_alignBottom="@id/backNavigation_imageButton"
+            android:layout_alignTop="@id/backNavigation_imageButton"
+            android:layout_toEndOf="@id/backNavigation_imageButton"
+            android:textSize="30sp"
+            android:gravity="center_vertical"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputName_textInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/signUpTitle_textView"
+            android:layout_margin="10dp"
+            android:hint="User name"
+            android:padding="5dp"
+            app:endIconMode="clear_text"
+            app:startIconDrawable="@drawable/ic_person"
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputName_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+
+            android:id="@+id/inputEmail_textInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/inputName_textInputLayout"
+            android:layout_margin="10dp"
+            android:hint="Email"
+            android:padding="5dp"
+            app:endIconMode="clear_text"
+            app:startIconDrawable="@drawable/ic_email"
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputEmail_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputNewPassword_textInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/inputEmail_textInputLayout"
+            android:layout_margin="10dp"
+            android:hint="New Password"
+            android:padding="5dp"
+            app:endIconMode="password_toggle"
+            app:startIconDrawable="@drawable/ic_key"
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputNewPassword_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputConfirmPassword_textInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/inputNewPassword_textInputLayout"
+            android:layout_margin="10dp"
+            android:hint="Confirm Password"
+            android:padding="5dp"
+            app:endIconMode="password_toggle"
+            app:startIconDrawable="@drawable/ic_lock"
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputConfirmPassword_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <CheckBox
+            android:id="@+id/agreement_checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/inputConfirmPassword_textInputLayout"
+            android:layout_centerHorizontal="true"
+            android:padding="5dp"
+            android:text="By checking you agree with the\n terms and condition"
+
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/agreement_checkBox"
+            android:layout_margin="10dp"
+            android:background="@drawable/buttons"
+            android:padding="5dp"
+            android:text="Submit"
+            android:textAllCaps="false"
+
+            />
+
+
+    </RelativeLayout>
+
+</ScrollView>

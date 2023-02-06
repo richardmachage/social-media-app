@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Theme.Social"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle"
+    android:orientation="vertical"
+    android:padding="5dp"
+    >
+
+    <TextView
+        android:id="@+id/userIdentity_textView"
+        style="@style/Theme.Social"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="serif-monospace"
+        android:padding="5dp"
+        android:text="\@UserName"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/postContent_textView"
+        style="@style/Theme.Social"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:text="This is just a sample text to see how this ui for the recycler view works."
+        android:textSize="18sp"
+        />
+
+
+</LinearLayout>

@@ -4,6 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/android_codes/social/app/src/main/res/drawable/buttons.xml" value="0.2" />
+        <entry key="..\:/android_codes/social/app/src/main/res/drawable/ic_add.xml" value="0.2115" />
+        <entry key="..\:/android_codes/social/app/src/main/res/drawable/ic_log_out.xml" value="0.209" />
+        <entry key="..\:/android_codes/social/app/src/main/res/drawable/rectangle.xml" value="0.209" />
         <entry key="..\:/android_codes/social/app/src/main/res/layout/activity_home.xml" value="0.20416666666666666" />
         <entry key="..\:/android_codes/social/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/android_codes/social/app/src/main/res/layout/activity_main.xml" value="0.22" />
@@ -12,6 +15,8 @@
         <entry key="..\:/android_codes/social/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/android_codes/social/app/src/main/res/layout/fragment_log_in.xml" value="0.25" />
         <entry key="..\:/android_codes/social/app/src/main/res/layout/fragment_sign_up.xml" value="0.25" />
+        <entry key="..\:/android_codes/social/app/src/main/res/layout/single_post.xml" value="0.5" />
+        <entry key="..\:/android_codes/social/app/src/main/res/menu/home_fragment_toolbar_items.xml" value="0.33" />
       </map>
     </option>
   </component>

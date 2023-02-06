@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 
 public class LogInFragment extends Fragment {
 
-    private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     private View view;
@@ -68,6 +68,7 @@ public class LogInFragment extends Fragment {
     private void logIn(boolean validation) {
         if (validation) {
             Navigation.findNavController(view).navigate(R.id.action_logInFragment_to_mainActivity);
+            getActivity().finish();
         }
 
     }

@@ -9,6 +9,7 @@ import com.example.social.R;
 
 public class LogInActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

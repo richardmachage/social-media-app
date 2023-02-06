@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,11 +26,15 @@ public class HomeFragment extends Fragment {
     View view;
     RecyclerView recyclerView;
     HomeRecyclerAdapter homeRecyclerAdapter;
+    HomeFragmentViewModel homeFragmentViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        homeFragmentViewModel = new HomeFragmentViewModel();
+
     }
 
     @Override
@@ -47,22 +52,11 @@ public class HomeFragment extends Fragment {
 
     private void initializeViews() {
         recyclerView = view.findViewById(R.id.homeFragment_recyclerView);
-        homeRecyclerAdapter = new HomeRecyclerAdapter(getContext(), populateListOfPosts());
+        homeRecyclerAdapter = new HomeRecyclerAdapter(getContext(), homeFragmentViewModel.populateListOfPosts());
     }
 
 
-    //TODO this is just a function to generate test data,
-    // get rid of it to implement real data from data source
-    private ArrayList<Post> populateListOfPosts() {
-        ArrayList<Post> listOfPosts = new ArrayList<Post>();
 
-        for (int i = 0; i < 20; i++) {
-            listOfPosts.add(new Post("@username",
-                    "This is just a sample text to see how this ui for the recycler view works."));
-        }
-
-        return listOfPosts;
-    }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -76,7 +70,14 @@ public class HomeFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.addPost_icon:
                 Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_createPostFragment);
-                return true;
+
+                break;
+
+            case R.id.logOut_icon:
+                Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_logInActivity);
+                getActivity().finish();
+
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

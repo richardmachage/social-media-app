@@ -25,4 +25,5 @@ public class CreatePostFragment extends Fragment {
         super.onResume();
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("New Post"); //hides the action/toolbar for this specific fragment
     }
+
 }

@@ -1,14 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Home.CreatePostFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        >
 
-</FrameLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/addPost_textInputLayout"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        app:expandedHintEnabled="true"
+        android:hint="Write your post..."
+        app:counterEnabled="true"
+        android:theme="@style/Theme.Social"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/addPost_TextInputEditText"
+            android:theme="@style/Theme.Social"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/addPost_button"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:background="@drawable/buttons"
+            android:text="Add Post"
+            android:textAllCaps="false"
+            android:fontFamily="serif-monospace"
+            android:textStyle="bold"
+            android:textColor="@color/design_default_color_on_secondary"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

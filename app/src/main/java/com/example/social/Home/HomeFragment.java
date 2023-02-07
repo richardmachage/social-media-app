@@ -53,7 +53,7 @@ public class HomeFragment extends Fragment {
 
     private void initializeViews() {
         recyclerView = view.findViewById(R.id.homeFragment_recyclerView);
-        homeRecyclerAdapter = new HomeRecyclerAdapter(getContext(), homeFragmentViewModel.populateListOfPosts());
+        homeRecyclerAdapter = new HomeRecyclerAdapter(getContext(), homeFragmentViewModel.listOfPosts);
     }
 
 

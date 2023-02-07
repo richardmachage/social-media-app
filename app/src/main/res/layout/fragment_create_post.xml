@@ -1,52 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
     tools:context=".Home.CreatePostFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical"
-        >
+        android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/addPost_textInputLayout"
-        android:layout_margin="10dp"
-        android:padding="5dp"
-        app:expandedHintEnabled="true"
-        android:hint="Write your post..."
-        app:counterEnabled="true"
-        android:theme="@style/Theme.Social"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/addPost_TextInputEditText"
-            android:theme="@style/Theme.Social"
-            />
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-    </com.google.android.material.textfield.TextInputLayout>
-        <androidx.appcompat.widget.AppCompatButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/addPost_button"
-            android:layout_margin="10dp"
-            android:padding="5dp"
-            android:background="@drawable/buttons"
-            android:text="Add Post"
-            android:textAllCaps="false"
-            android:fontFamily="serif-monospace"
-            android:textStyle="bold"
-            android:textColor="@color/design_default_color_on_secondary"
-            android:textSize="18sp"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/addPost_textInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="5dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:theme="@style/Theme.Social"
+                app:counterEnabled="true"
+                app:expandedHintEnabled="false"
+                android:hint="Write your post..."
 
-    </LinearLayout>
+                >
 
-</RelativeLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/addPost_TextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/Theme.Social"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/addPost_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/buttons"
+                android:fontFamily="serif-monospace"
+                android:padding="5dp"
+                android:text="Add Post"
+                android:textAllCaps="false"
+                android:textColor="@color/design_default_color_on_secondary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</ScrollView>

@@ -18,7 +18,8 @@ public class LogInActivity extends AppCompatActivity {
 
     }
 
-    private void initializeViews(){
+    @Override
+    public void onBackPressed() {
 
     }
 }

@@ -2,6 +2,8 @@ package com.example.social.LogIn;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -15,8 +17,12 @@ import android.widget.Toast;
 
 import com.example.social.R;
 import com.example.social.databinding.FragmentSignUpBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.regex.Matcher;
 
@@ -24,11 +30,17 @@ public class SignUpFragment extends Fragment {
 
 
     private View view;
-    private ImageButton backNavigationImageButton;
-    private Button submitButton;
-    private TextInputLayout userNameTextInputLayout, emailTextInputLayout, newPasswordTextInputLayout, confirmPasswordTextInputLayout;
-    private TextInputEditText inputUsernameEditText, inputEmailEditText, inputNewPasswordEditText, confirmPasswordEditText;
     private FragmentSignUpBinding binding;
+    private FirebaseAuth firebaseAuth;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //creating an instance of Firebase
+        firebaseAuth = FirebaseAuth.getInstance();
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,10 +62,26 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //TODO add logic for submitting details to database
+
+
                 if (validateInputs()) {
-                    submitDetails(binding.inputNameEditText.getText().toString(), //username
-                            binding.inputEmailEditText.getText().toString(), //email address
-                            binding.inputNewPasswordEditText.getText().toString()); //password
+
+                    String userEmail = binding.inputEmailEditText.getText().toString();
+                    String password = binding.inputNewPasswordEditText.getText().toString();
+
+                    firebaseAuth.createUserWithEmailAndPassword(userEmail, password)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if(task.isSuccessful()){
+                                        Toast.makeText(getContext(),"Sign up successful",Toast.LENGTH_SHORT).show();
+
+                                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_signUpFragment_to_logInFragment);
+                                    }else{
+                                        Toast.makeText(getContext(),"SignUp failed "+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                 }
             }
         });
@@ -148,19 +176,6 @@ public class SignUpFragment extends Fragment {
         //TODO implement logic
 
         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_signUpFragment_to_logInFragment);
-    }
-
-    private void initializeViews() {
-        backNavigationImageButton = view.findViewById(R.id.backNavigation_imageButton);
-        submitButton = view.findViewById(R.id.submit_button);
-        userNameTextInputLayout = view.findViewById(R.id.inputName_textInputLayout);
-        emailTextInputLayout = view.findViewById(R.id.inputEmail_textInputLayout);
-        newPasswordTextInputLayout = view.findViewById(R.id.inputPassword_textInputLayout);
-        confirmPasswordTextInputLayout = view.findViewById(R.id.inputConfirmPassword_textInputLayout);
-        inputUsernameEditText = view.findViewById(R.id.inputName_editText);
-        inputEmailEditText = view.findViewById(R.id.inputEmail_editText);
-        inputNewPasswordEditText = view.findViewById(R.id.inputNewPassword_editText);
-        confirmPasswordEditText = view.findViewById(R.id.inputConfirmPassword_editText);
     }
 
 

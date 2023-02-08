@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,6 +93,8 @@ public class LogInFragment extends Fragment {
             inputPasswordEditText.requestFocus();
 
         }
+
+//        Patterns.EMAIL_ADDRESS.matcher("rchacha261@gmail.com").matches();
 
         if (password.isEmpty()) { //check for empty field
             inputPasswordLayout.setHelperTextEnabled(true);

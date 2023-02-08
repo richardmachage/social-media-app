@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.widget.Toolbar;
 
 import com.example.social.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LogInActivity extends AppCompatActivity {
+
 
 
     @Override
@@ -15,7 +17,6 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setTitle("Friends Wema");
-
     }
 
     @Override

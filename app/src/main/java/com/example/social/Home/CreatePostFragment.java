@@ -1,5 +1,6 @@
 package com.example.social.Home;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,18 +18,27 @@ import com.example.social.databinding.FragmentCreatePostBinding;
 
 public class CreatePostFragment extends Fragment {
     private FragmentCreatePostBinding binding;
+    private ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentCreatePostBinding.inflate(LayoutInflater.from(getContext()));
-
+        progressDialog = new ProgressDialog(this.getContext());
         binding.addPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (validateInput()) {
-                    addNewPost("@machage", binding.addPostTextInputEditText.getText().toString());
+
+                    progressDialog.setMessage("Posting...");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.show();
+
+                    addNewPost("@machage", binding.addPostTextInputEditText.getText().toString().trim());
+
+                    progressDialog.dismiss();
+                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_createPostFragment_to_homeFragment);
                 }
             }
         });

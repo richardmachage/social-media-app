@@ -1,5 +1,6 @@
 package com.example.social.LogIn;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.social.R;
@@ -29,7 +31,7 @@ import java.util.regex.Matcher;
 public class SignUpFragment extends Fragment {
 
 
-    private View view;
+    private ProgressDialog progressDialog;
     private FragmentSignUpBinding binding;
     private FirebaseAuth firebaseAuth;
 
@@ -48,8 +50,7 @@ public class SignUpFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentSignUpBinding.inflate(LayoutInflater.from(getContext()));
 
-//        view = inflater.inflate(R.layout.fragment_sign_up, container, false);
-//        initializeViews();
+        progressDialog = new ProgressDialog(this.getContext());
 
         binding.backNavigationImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,8 +64,11 @@ public class SignUpFragment extends Fragment {
             public void onClick(View view) {
                 //TODO add logic for submitting details to database
 
-
                 if (validateInputs()) {
+
+                    progressDialog.setMessage("Creating account...");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.show();
 
                     String userEmail = binding.inputEmailEditText.getText().toString().trim();
                     String password = binding.inputNewPasswordEditText.getText().toString().trim();
@@ -76,8 +80,11 @@ public class SignUpFragment extends Fragment {
                                     if(task.isSuccessful()){
                                         Toast.makeText(getContext(),"Sign up successful",Toast.LENGTH_SHORT).show();
 
+                                        progressDialog.dismiss();
                                         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_signUpFragment_to_logInFragment);
                                     }else{
+
+                                        progressDialog.dismiss();
                                         Toast.makeText(getContext(),"SignUp failed "+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                                     }
                                 }

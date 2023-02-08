@@ -1,5 +1,6 @@
 package com.example.social.LogIn;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ public class LogInFragment extends Fragment {
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     private View view;
+    private ProgressDialog progressDialog;
     private Button logInButton;
     private TextView forgotPasswordTextView, signUpTextView;
     private TextInputEditText inputEmailEditText, inputPasswordEditText;
@@ -85,6 +87,10 @@ public class LogInFragment extends Fragment {
 
     private void logIn(boolean validation) {
         if (validation) {
+            progressDialog.setMessage("Logging in...");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+
             String userEmail = inputEmailEditText.getText().toString().trim();
             String password = inputPasswordEditText.getText().toString().trim();
 
@@ -94,12 +100,15 @@ public class LogInFragment extends Fragment {
                 public void onSuccess(AuthResult authResult) {
                     Toast.makeText(getContext(),"Log in Successful", Toast.LENGTH_SHORT).show();
 
+                    progressDialog.dismiss();
                     Navigation.findNavController(view).navigate(R.id.action_logInFragment_to_mainActivity);
                     getActivity().finish();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+
+                            progressDialog.dismiss();
                             Toast.makeText(getContext(),"Log in Failed", Toast.LENGTH_SHORT).show();
 
                         }
@@ -154,6 +163,8 @@ public class LogInFragment extends Fragment {
         inputPasswordLayout = view.findViewById(R.id.inputPassword_textInputLayout);
         signUpTextView = view.findViewById(R.id.signUp_textView);
         forgotPasswordTextView = view.findViewById(R.id.forgotPassword_textview);
+        progressDialog = new ProgressDialog(this.getContext());
+
 
     }
 }

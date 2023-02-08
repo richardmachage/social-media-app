@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity {
 
+    public static String User_UID;
     private ActivityHomeBinding binding;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -41,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(goToLogIn_intent);
 
                 }else{
-                    Toast.makeText(HomeActivity.this,"logged in as: "+ firebaseAuth.getCurrentUser().getEmail(),Toast.LENGTH_SHORT).show();
+                    User_UID = firebaseAuth.getCurrentUser().getUid();
                 }
             }
         };

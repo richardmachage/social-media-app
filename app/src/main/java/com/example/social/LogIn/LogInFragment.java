@@ -98,7 +98,7 @@ public class LogInFragment extends Fragment {
                     .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                 @Override
                 public void onSuccess(AuthResult authResult) {
-                    Toast.makeText(getContext(),"Log in Successful", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(),"Log in Successful", Toast.LENGTH_SHORT).show();
 
                     progressDialog.dismiss();
                     Navigation.findNavController(view).navigate(R.id.action_logInFragment_to_mainActivity);

@@ -1,5 +1,6 @@
 package com.example.social.Home;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.social.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -29,6 +31,8 @@ public class HomeFragment extends Fragment {
     RecyclerView recyclerView;
     HomeRecyclerAdapter homeRecyclerAdapter;
     HomeFragmentViewModel homeFragmentViewModel;
+    private ProgressDialog progressDialog;
+    FirebaseAuth firebaseAuth;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +40,7 @@ public class HomeFragment extends Fragment {
         setHasOptionsMenu(true);
 
         homeFragmentViewModel = ViewModelProviders.of(this).get(HomeFragmentViewModel.class);
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -54,6 +59,7 @@ public class HomeFragment extends Fragment {
     private void initializeViews() {
         recyclerView = view.findViewById(R.id.homeFragment_recyclerView);
         homeRecyclerAdapter = new HomeRecyclerAdapter(getContext(), homeFragmentViewModel.listOfPosts);
+        progressDialog = new ProgressDialog(this.getContext());
     }
 
 
@@ -75,6 +81,13 @@ public class HomeFragment extends Fragment {
                 break;
 
             case R.id.logOut_icon:
+                progressDialog.setMessage("Logging Out...");
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.show();
+
+                firebaseAuth.signOut();
+                progressDialog.dismiss();
+
                 Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_logInActivity);
                 getActivity().finish();
 

@@ -36,7 +36,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
                 if(firebaseAuth.getCurrentUser() == null){ //if true it means no user is logged in
-                    Intent goToLogIn_intent = new Intent(HomeActivity.this, Log.class);
+                    Intent goToLogIn_intent = new Intent(HomeActivity.this, LogInActivity.class);
                     goToLogIn_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //clears the current activity as well as all others on top of it in the stack so that user wont be able to go back
                     startActivity(goToLogIn_intent);
 

@@ -66,8 +66,8 @@ public class SignUpFragment extends Fragment {
 
                 if (validateInputs()) {
 
-                    String userEmail = binding.inputEmailEditText.getText().toString();
-                    String password = binding.inputNewPasswordEditText.getText().toString();
+                    String userEmail = binding.inputEmailEditText.getText().toString().trim();
+                    String password = binding.inputNewPasswordEditText.getText().toString().trim();
 
                     firebaseAuth.createUserWithEmailAndPassword(userEmail, password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {

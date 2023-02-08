@@ -2,6 +2,8 @@ package com.example.social.LogIn;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -12,10 +14,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.social.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,6 +39,16 @@ public class LogInFragment extends Fragment {
     private TextInputEditText inputEmailEditText, inputPasswordEditText;
     private TextInputLayout inputEmailLayout, inputPasswordLayout;
 
+    private FirebaseAuth firebaseAuth;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //creating an instance of Firebase
+        firebaseAuth = FirebaseAuth.getInstance();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,8 +85,26 @@ public class LogInFragment extends Fragment {
 
     private void logIn(boolean validation) {
         if (validation) {
-            Navigation.findNavController(view).navigate(R.id.action_logInFragment_to_mainActivity);
-            getActivity().finish();
+            String userEmail = inputEmailEditText.getText().toString().trim();
+            String password = inputPasswordEditText.getText().toString().trim();
+
+            firebaseAuth.signInWithEmailAndPassword(userEmail, password)
+                    .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                @Override
+                public void onSuccess(AuthResult authResult) {
+                    Toast.makeText(getContext(),"Log in Successful", Toast.LENGTH_SHORT).show();
+
+                    Navigation.findNavController(view).navigate(R.id.action_logInFragment_to_mainActivity);
+                    getActivity().finish();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getContext(),"Log in Failed", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+
         }
 
     }

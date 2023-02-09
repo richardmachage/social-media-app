@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +19,17 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.social.R;
+import com.example.social.User;
 import com.example.social.databinding.FragmentSignUpBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.regex.Matcher;
 
@@ -34,6 +39,7 @@ public class SignUpFragment extends Fragment {
     private ProgressDialog progressDialog;
     private FragmentSignUpBinding binding;
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +47,7 @@ public class SignUpFragment extends Fragment {
 
         //creating an instance of Firebase
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
     }
 
@@ -72,13 +79,36 @@ public class SignUpFragment extends Fragment {
 
                     String userEmail = binding.inputEmailEditText.getText().toString().trim();
                     String password = binding.inputNewPasswordEditText.getText().toString().trim();
+                    String userName = binding.inputNameEditText.getText().toString().trim();
 
                     firebaseAuth.createUserWithEmailAndPassword(userEmail, password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()){
-                                        Toast.makeText(getContext(),"Sign up successful",Toast.LENGTH_SHORT).show();
+
+                                        progressDialog.setMessage("Adding to database...");
+
+                                        firebaseFirestore.collection("Users")
+                                                .document(firebaseAuth.getCurrentUser().toString())
+                                                .set(new User(firebaseAuth.getCurrentUser().toString(),userEmail,userName ))
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
+                                                        progressDialog.setMessage("Finished");
+                                                        Toast.makeText(getContext(),"Sign up successful",Toast.LENGTH_SHORT).show();
+
+
+                                                    }
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.d("Sign up log ", "Adding to firestore failed "+e.getMessage());
+                                                        Toast.makeText(getContext(),"Adding to database failed "+e.getMessage(),Toast.LENGTH_SHORT).show();
+
+                                                    }
+                                                });
+
 
                                         progressDialog.dismiss();
                                         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_signUpFragment_to_logInFragment);

@@ -32,11 +32,16 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
 
     @Override
     public void onBindViewHolder(@NonNull HomeRecyclerVH holder, int position) {
+        Post post = listOfPosts.get(position);
+
         holder.userIdentity_textView.
-                setText(listOfPosts.get(position).userIdentity);
+                setText("@"+ HomeFragment.listOfUsers.get(
+                        HomeFragment.userNamesIndex.get(post.userIdentity)
+                ).getName()
+                );
 
         holder.postContent_textView.
-                setText(listOfPosts.get(position).postContent);
+                setText(post.postContent);
     }
 
 

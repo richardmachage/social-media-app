@@ -87,17 +87,13 @@ public class SignUpFragment extends Fragment {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()){
 
-                                        progressDialog.setMessage("Adding to database...");
-
                                         firebaseFirestore.collection("Users")
-                                                .document(firebaseAuth.getCurrentUser().toString())
-                                                .set(new User(firebaseAuth.getCurrentUser().toString(),userEmail,userName ))
+                                                .document(firebaseAuth.getCurrentUser().getUid())
+                                                .set(new User(firebaseAuth.getCurrentUser().getUid(),userEmail,userName ))
                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void unused) {
-                                                        progressDialog.setMessage("Finished");
                                                         Toast.makeText(getContext(),"Sign up successful",Toast.LENGTH_SHORT).show();
-
 
                                                     }
                                                 }).addOnFailureListener(new OnFailureListener() {

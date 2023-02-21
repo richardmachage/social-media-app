@@ -3,6 +3,8 @@ package com.example.social.Home;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -15,10 +17,23 @@ import android.widget.Toast;
 
 import com.example.social.R;
 import com.example.social.databinding.FragmentCreatePostBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class CreatePostFragment extends Fragment {
     private FragmentCreatePostBinding binding;
     private ProgressDialog progressDialog;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,14 +46,31 @@ public class CreatePostFragment extends Fragment {
             public void onClick(View view) {
                 if (validateInput()) {
 
-                    progressDialog.setMessage("Posting...");
+                    progressDialog.setMessage("Uploading...");
                     progressDialog.setCanceledOnTouchOutside(false);
                     progressDialog.show();
 
-                    addNewPost("@machage", binding.addPostTextInputEditText.getText().toString().trim());
+                    //add post to Firestore Database
+                    firebaseFirestore.collection("Posts")
+                            .document()
+                            .set(new Post(firebaseAuth.getCurrentUser().getUid(),binding.addPostTextInputEditText.getText().toString().trim()))
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_SHORT).show();
+                                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_createPostFragment_to_homeFragment);
 
-                    progressDialog.dismiss();
-                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_createPostFragment_to_homeFragment);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getContext(), "Failed to upload: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+
                 }
             }
         });
@@ -48,21 +80,6 @@ public class CreatePostFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void addNewPost(String userIdentity, String postContent) {
-        Post newPost = new Post(userIdentity, postContent);
-
-
-        //TODO this is for temporary testing,
-        //TODO adds new post to the listOfPosts in HomeFragmentViewModel
-        HomeFragmentViewModel.listOfPosts.add(newPost);
-
-        Toast.makeText(getContext(),"post successfullly added", Toast.LENGTH_SHORT).show();
-
-        binding.addPostTextInputEditText.setText(null);
-
-//        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_createPostFragment_to_homeFragment);
-
-    }
 
     public void onResume() {
         super.onResume();

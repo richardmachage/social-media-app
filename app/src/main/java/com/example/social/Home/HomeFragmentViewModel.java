@@ -1,24 +1,24 @@
 package com.example.social.Home;
 
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
 public class HomeFragmentViewModel extends ViewModel {
 
-    public static ArrayList<Post> listOfPosts = new ArrayList<>();
-
-    //TODO this is just a function to generate test data,
-    // get rid of it to implement real data from data source
-
-     /*ArrayList<Post> populateListOfPosts() {
 
 
-        for (int i = 0; i < 10; i++) {
-            listOfPosts.add(new Post("@username",
-                    "This is just a sample text to see how this ui for the recycler view works."));
-        }
 
-        return listOfPosts;
-    }*/
 }
+

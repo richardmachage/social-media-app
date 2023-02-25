@@ -47,7 +47,7 @@ public class SignUpFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         //creating an instance of Firebase
-        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseUtils.getFirebaseAuthInstance();
         firebaseFirestore = FirebaseUtils.getFirestoreInstance();
 
     }

@@ -37,7 +37,7 @@ public class CreatePostFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseUtils.getFirebaseAuthInstance();
         firebaseFirestore = FirebaseUtils.getFirestoreInstance();
         userUid = firebaseAuth.getCurrentUser().getUid();
         getUserName();

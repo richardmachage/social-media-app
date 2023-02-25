@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.social.R;
+import com.example.social.Utils.FirebaseUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -49,7 +50,7 @@ public class LogInFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         //creating an instance of Firebase
-        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseUtils.getFirebaseAuthInstance();
     }
 
     @Override

@@ -46,7 +46,7 @@ public class HomeFragment extends Fragment {
 
     HomeRecyclerAdapter homeRecyclerAdapter;
 
-    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference postsCollection;
     CollectionReference usersCollection;
@@ -57,6 +57,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        firebaseAuth = FirebaseUtils.getFirebaseAuthInstance();
         firebaseFirestore = FirebaseUtils.getFirestoreInstance();
         postsCollection = firebaseFirestore.collection("Posts");
         usersCollection = firebaseFirestore.collection("Users");

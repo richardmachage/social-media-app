@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
 import android.text.Editable;
@@ -67,6 +68,7 @@ public class CreatePostFragment extends Fragment {
                                 public void onSuccess(Void unused) {
                                     progressDialog.dismiss();
                                     Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_SHORT).show();
+                                    getParentFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                                     Navigation.findNavController(binding.getRoot()).navigate(R.id.action_createPostFragment_to_homeFragment);
 
                                 }

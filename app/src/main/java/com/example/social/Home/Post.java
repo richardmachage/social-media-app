@@ -15,12 +15,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Post {
-    String userIdentity, postContent;
+    String userIdentity, postContent,userName;
 
 
-    public Post(String userIdentity, String postContent) {
+    public Post(String userIdentity, String postContent, String userName) {
         this.userIdentity = userIdentity;
         this.postContent = postContent;
+        this.userName = userName;
     }
 
     public Post() {
@@ -42,5 +43,11 @@ public class Post {
         this.postContent = postContent;
     }
 
+    public String getUserName() {
+        return userName;
+    }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 }

@@ -6,7 +6,7 @@ public class User {
     String name;
 
     public User(String userUID, String email, String name) {
-        UserUID = userUID;
+        this.UserUID = userUID;
         this.email = email;
         this.name = name;
     }

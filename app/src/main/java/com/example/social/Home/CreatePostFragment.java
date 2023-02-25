@@ -10,16 +10,19 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.social.R;
+import com.example.social.User;
 import com.example.social.databinding.FragmentCreatePostBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class CreatePostFragment extends Fragment {
@@ -27,12 +30,16 @@ public class CreatePostFragment extends Fragment {
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
+    private String userUid;
+    private String userName;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
+        userUid = firebaseAuth.getCurrentUser().getUid();
+        getUserName();
     }
 
     @Override
@@ -53,7 +60,7 @@ public class CreatePostFragment extends Fragment {
                     //add post to Firestore Database
                     firebaseFirestore.collection("Posts")
                             .document()
-                            .set(new Post(firebaseAuth.getCurrentUser().getUid(),binding.addPostTextInputEditText.getText().toString().trim()))
+                            .set(new Post(userUid, binding.addPostTextInputEditText.getText().toString().trim(), userName))
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
@@ -80,6 +87,24 @@ public class CreatePostFragment extends Fragment {
         return binding.getRoot();
     }
 
+    private void getUserName(){
+
+        firebaseFirestore.collection("Users").document(userUid)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        User user = documentSnapshot.toObject(User.class);
+                        userName = user.getName();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        userName = null;
+                    }
+                });
+    }
 
     public void onResume() {
         super.onResume();
@@ -87,14 +112,14 @@ public class CreatePostFragment extends Fragment {
     }
 
     private boolean validateInput(){
-        if(binding.addPostTextInputEditText.getText().toString().isEmpty()){
+        if(binding.addPostTextInputEditText.getText().toString().trim().isEmpty() || binding.addPostTextInputEditText.getText().toString().trim().equals("")  ){
             binding.addPostTextInputLayout.setHelperTextEnabled(true);
             binding.addPostTextInputLayout.setHelperText("Add content to post");
 
             return false;
+        }else{
+            return true;
         }
-
-        return true;
     }
 
 }

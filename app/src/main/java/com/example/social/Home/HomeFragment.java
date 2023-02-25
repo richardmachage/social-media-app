@@ -51,8 +51,6 @@ public class HomeFragment extends Fragment {
     CollectionReference usersCollection;
     private ArrayList<Post> listOfPosts;
     private FragmentHomeBinding binding;
-    public static ArrayList<User> listOfUsers;
-    public static Map<String, Integer> userNamesIndex;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,10 +60,6 @@ public class HomeFragment extends Fragment {
         postsCollection = firebaseFirestore.collection("Posts");
         usersCollection = firebaseFirestore.collection("Users");
         listOfPosts = getListOfPosts();
-        listOfUsers = getListOfUsers();
-        userNamesIndex = new HashMap<>();
-
-
     }
 
     @Override
@@ -78,7 +72,6 @@ public class HomeFragment extends Fragment {
         binding.homeFragmentRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         homeRecyclerAdapter = new HomeRecyclerAdapter(getContext(), listOfPosts);
         binding.homeFragmentRecyclerView.setAdapter(homeRecyclerAdapter);
-
 
 
         return binding.getRoot();
@@ -102,42 +95,7 @@ public class HomeFragment extends Fragment {
                         }
                         homeRecyclerAdapter.notifyDataSetChanged();
 
-                       // Toast.makeText(getContext(), "Posts fetched: " + list.size(), Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        //TODO add implementation to show error message
-                        progressDialog.dismiss();
-                       Toast.makeText(getContext(), "Failed to get data", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        return list;
-    }
-
-    public ArrayList<User> getListOfUsers() {
-        ProgressDialog progressDialog = new ProgressDialog(this.getContext());
-        progressDialog.setMessage("Loading...");
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
-
-        ArrayList<User> list = new ArrayList<>();
-
-        usersCollection.get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            User user = documentSnapshot.toObject(User.class);
-
-                            userNamesIndex.put(user.getUserUID(),list.size());
-                            list.add(userNamesIndex.get(user.getUserUID()),user);
-                        }
-                        homeRecyclerAdapter.notifyDataSetChanged();
-
-                        Toast.makeText(getContext(), "Users fetched from hash: " + userNamesIndex.get(list.get(0).getUserUID()), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(getContext(), "Posts fetched: " + list.size(), Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -151,7 +109,6 @@ public class HomeFragment extends Fragment {
 
         return list;
     }
-
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -191,6 +148,4 @@ public class HomeFragment extends Fragment {
         super.onResume();
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Home"); //shows the action/toolbar for this specific fragment
     }
-
-
 }

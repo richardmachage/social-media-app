@@ -35,10 +35,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapte
         Post post = listOfPosts.get(position);
 
         holder.userIdentity_textView.
-                setText("@"+ HomeFragment.listOfUsers.get(
-                        HomeFragment.userNamesIndex.get(post.userIdentity)
-                ).getName()
-                );
+                setText("@" + post.getUserName());
 
         holder.postContent_textView.
                 setText(post.postContent);

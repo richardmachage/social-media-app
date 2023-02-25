@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.social.R;
 import com.example.social.User;
+import com.example.social.Utils.FirebaseUtils;
 import com.example.social.databinding.FragmentCreatePostBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,7 +38,7 @@ public class CreatePostFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseFirestore = FirebaseUtils.getFirestoreInstance();
         userUid = firebaseAuth.getCurrentUser().getUid();
         getUserName();
     }

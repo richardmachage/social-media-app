@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.social.R;
 import com.example.social.User;
+import com.example.social.Utils.FirebaseUtils;
 import com.example.social.databinding.FragmentSignUpBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,7 +48,7 @@ public class SignUpFragment extends Fragment {
 
         //creating an instance of Firebase
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseFirestore = FirebaseUtils.getFirestoreInstance();
 
     }
 

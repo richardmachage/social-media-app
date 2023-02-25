@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.social.R;
 import com.example.social.User;
+import com.example.social.Utils.FirebaseUtils;
 import com.example.social.databinding.FragmentHomeBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -56,7 +57,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseFirestore = FirebaseUtils.getFirestoreInstance();
         postsCollection = firebaseFirestore.collection("Posts");
         usersCollection = firebaseFirestore.collection("Users");
         listOfPosts = getListOfPosts();

@@ -150,4 +150,6 @@ public class HomeFragment extends Fragment {
         super.onResume();
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Home"); //shows the action/toolbar for this specific fragment
     }
+
+
 }

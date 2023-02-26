@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.social.LogIn.LogInActivity;
 import com.example.social.R;
+import com.example.social.Utils.FirebaseUtils;
 import com.example.social.databinding.ActivityHomeBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -31,7 +32,7 @@ public class HomeActivity extends AppCompatActivity {
         binding = ActivityHomeBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseUtils.getFirebaseAuthInstance();
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -53,5 +54,11 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         firebaseAuth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+
     }
 }

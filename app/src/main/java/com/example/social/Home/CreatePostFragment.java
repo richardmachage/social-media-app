@@ -13,6 +13,9 @@ import androidx.navigation.Navigation;
 import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -38,6 +41,7 @@ public class CreatePostFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         firebaseAuth = FirebaseUtils.getFirebaseAuthInstance();
         firebaseFirestore = FirebaseUtils.getFirestoreInstance();
         userUid = firebaseAuth.getCurrentUser().getUid();
@@ -88,6 +92,25 @@ public class CreatePostFragment extends Fragment {
 
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.createpost_fragment_toolbar_items,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.home_icon){
+
+            getParentFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_createPostFragment_to_homeFragment);
+        }
+
+
+        return super.onOptionsItemSelected(item);
+
     }
 
     private void getUserName(){

@@ -26,6 +26,7 @@ import com.example.social.Utils.FirebaseUtils;
 import com.example.social.databinding.FragmentCreatePostBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -54,6 +55,7 @@ public class CreatePostFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentCreatePostBinding.inflate(LayoutInflater.from(getContext()));
         progressDialog = new ProgressDialog(this.getContext());
+
         binding.addPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +68,7 @@ public class CreatePostFragment extends Fragment {
                     //add post to Firestore Database
                     firebaseFirestore.collection("Posts")
                             .document()
-                            .set(new Post(userUid, binding.addPostTextInputEditText.getText().toString().trim(), userName))
+                            .set(new Post(userUid, binding.addPostTextInputEditText.getText().toString().trim(), userName, Timestamp.now()))
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
@@ -147,5 +149,7 @@ public class CreatePostFragment extends Fragment {
             return true;
         }
     }
+
+
 
 }

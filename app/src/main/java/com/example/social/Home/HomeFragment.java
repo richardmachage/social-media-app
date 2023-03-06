@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,7 +35,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -64,6 +67,7 @@ public class HomeFragment extends Fragment {
         listOfPosts = getListOfPosts();
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,19 +79,27 @@ public class HomeFragment extends Fragment {
         homeRecyclerAdapter = new HomeRecyclerAdapter(getContext(), listOfPosts);
         binding.homeFragmentRecyclerView.setAdapter(homeRecyclerAdapter);
 
-
+        binding.swipeToRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getListOfPostsOnRefresh();
+            }
+        });
         return binding.getRoot();
     }
 
     public ArrayList<Post> getListOfPosts() {
+        //binding.swipeToRefreshLayout.setRefreshing(true);
         ProgressDialog progressDialog = new ProgressDialog(this.getContext());
         progressDialog.setMessage("Loading...");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
+
         ArrayList<Post> list = new ArrayList<>();
 
-        postsCollection.get()
+        postsCollection.orderBy("timePosted", Query.Direction.DESCENDING)
+                .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -99,17 +111,53 @@ public class HomeFragment extends Fragment {
 
                         // Toast.makeText(getContext(), "Posts fetched: " + list.size(), Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
+                        //binding.swipeToRefreshLayout.setRefreshing(false);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         //TODO add implementation to show error message
                         progressDialog.dismiss();
+                        //binding.swipeToRefreshLayout.setRefreshing(false);
+
                         Toast.makeText(getContext(), "Failed to get data", Toast.LENGTH_SHORT).show();
                     }
                 });
 
         return list;
+    }
+
+    public void getListOfPostsOnRefresh() {
+
+        postsCollection.orderBy("timePosted", Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            Post post = documentSnapshot.toObject(Post.class);
+
+                            if (! listOfPosts.contains(post)){
+                                listOfPosts.add(post);
+                            }
+
+                        }
+                        homeRecyclerAdapter.notifyDataSetChanged();
+
+                        Toast.makeText(getContext(), "list updated", Toast.LENGTH_SHORT).show();
+
+                        binding.swipeToRefreshLayout.setRefreshing(false);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //TODO add implementation to show error message
+                        binding.swipeToRefreshLayout.setRefreshing(false);
+
+                        Toast.makeText(getContext(), "Failed to get data", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 
     @Override
@@ -132,7 +180,6 @@ public class HomeFragment extends Fragment {
                 progressDialog.setMessage("Logging Out...");
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.show();
-
                 firebaseAuth.signOut();
                 progressDialog.dismiss();
 

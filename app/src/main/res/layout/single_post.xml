@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Theme.Social"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/Theme.Social"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/rectangle"
-    android:orientation="vertical"
     android:padding="5dp"
-    >
+    app:cardElevation="14dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp"
+    android:layout_marginBottom="3dp"
+    app:cardCornerRadius="4dp">
 
     <TextView
         android:id="@+id/userIdentity_textView"
@@ -16,19 +19,20 @@
         android:fontFamily="serif-monospace"
         android:padding="5dp"
         android:text="\@UserName"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textSize="18sp"
+        />
 
     <TextView
         android:id="@+id/postContent_textView"
         style="@style/Theme.Social"
-
+        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
         android:padding="5dp"
         android:text="This is just a sample text to see how this ui for the recycler view works."
-        android:textSize="18sp"
+        android:textSize="20sp"
         />
 
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>

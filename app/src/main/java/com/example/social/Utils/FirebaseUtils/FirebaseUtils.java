@@ -1,4 +1,4 @@
-package com.example.social.Utils;
+package com.example.social.Utils.FirebaseUtils;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;

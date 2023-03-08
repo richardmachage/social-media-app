@@ -2,48 +2,35 @@ package com.example.social.Home;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.social.R;
-import com.example.social.User;
-import com.example.social.Utils.FirebaseUtils;
+import com.example.social.Utils.FirebaseUtils.FirebaseUtils;
 import com.example.social.databinding.FragmentHomeBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class HomeFragment extends Fragment {
 
@@ -82,7 +69,9 @@ public class HomeFragment extends Fragment {
         binding.swipeToRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+
                 getListOfPostsOnRefresh();
+                binding.swipeToRefreshLayout.setRefreshing(false);
             }
         });
         return binding.getRoot();
@@ -98,7 +87,7 @@ public class HomeFragment extends Fragment {
 
         ArrayList<Post> list = new ArrayList<>();
 
-        postsCollection.orderBy("timePosted", Query.Direction.DESCENDING)
+        postsCollection.orderBy("timePosted", Query.Direction.ASCENDING)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -128,6 +117,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void getListOfPostsOnRefresh() {
+        ArrayList<Post> list = new ArrayList<>();
 
         postsCollection.orderBy("timePosted", Query.Direction.DESCENDING)
                 .get()
@@ -136,12 +126,9 @@ public class HomeFragment extends Fragment {
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             Post post = documentSnapshot.toObject(Post.class);
-
-                            if (! listOfPosts.contains(post)){
-                                listOfPosts.add(post);
-                            }
-
+                            list.add(post);
                         }
+                        listOfPosts =list;
                         homeRecyclerAdapter.notifyDataSetChanged();
 
                         Toast.makeText(getContext(), "list updated", Toast.LENGTH_SHORT).show();
@@ -157,7 +144,6 @@ public class HomeFragment extends Fragment {
                         Toast.makeText(getContext(), "Failed to get data", Toast.LENGTH_SHORT).show();
                     }
                 });
-
     }
 
     @Override

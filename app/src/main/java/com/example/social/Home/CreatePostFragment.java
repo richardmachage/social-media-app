@@ -150,6 +150,4 @@ public class CreatePostFragment extends Fragment {
         }
     }
 
-
-
 }

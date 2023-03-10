@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment {
         firebaseFirestore = FirebaseUtils.getFirestoreInstance();
         postsCollection = firebaseFirestore.collection("Posts");
         usersCollection = firebaseFirestore.collection("Users");
-        listOfPosts = getListOfPosts();
+        //listOfPosts = getListOfPosts();
     }
 
 
@@ -63,7 +63,7 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(LayoutInflater.from(getContext()));
 
         binding.homeFragmentRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        homeRecyclerAdapter = new HomeRecyclerAdapter(getContext(), listOfPosts);
+        homeRecyclerAdapter = new HomeRecyclerAdapter(getContext(), getListOfPosts());
         binding.homeFragmentRecyclerView.setAdapter(homeRecyclerAdapter);
 
         binding.swipeToRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -71,6 +71,10 @@ public class HomeFragment extends Fragment {
             public void onRefresh() {
 
                 getListOfPostsOnRefresh();
+                //binding.homeFragmentRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                binding.homeFragmentRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                homeRecyclerAdapter = new HomeRecyclerAdapter(getContext(), getListOfPostsOnRefresh());
+                binding.homeFragmentRecyclerView.setAdapter(homeRecyclerAdapter);
                 binding.swipeToRefreshLayout.setRefreshing(false);
             }
         });
@@ -87,7 +91,7 @@ public class HomeFragment extends Fragment {
 
         ArrayList<Post> list = new ArrayList<>();
 
-        postsCollection.orderBy("timePosted", Query.Direction.ASCENDING)
+        postsCollection.orderBy("timePosted", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -116,7 +120,14 @@ public class HomeFragment extends Fragment {
         return list;
     }
 
-    public void getListOfPostsOnRefresh() {
+    public ArrayList<Post> getListOfPostsOnRefresh() {
+        //binding.swipeToRefreshLayout.setRefreshing(true);
+        /*ProgressDialog progressDialog = new ProgressDialog(this.getContext());
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();*/
+
+
         ArrayList<Post> list = new ArrayList<>();
 
         postsCollection.orderBy("timePosted", Query.Direction.DESCENDING)
@@ -128,22 +139,24 @@ public class HomeFragment extends Fragment {
                             Post post = documentSnapshot.toObject(Post.class);
                             list.add(post);
                         }
-                        listOfPosts =list;
                         homeRecyclerAdapter.notifyDataSetChanged();
 
-                        Toast.makeText(getContext(), "list updated", Toast.LENGTH_SHORT).show();
-
-                        binding.swipeToRefreshLayout.setRefreshing(false);
+                        // Toast.makeText(getContext(), "Posts fetched: " + list.size(), Toast.LENGTH_SHORT).show();
+                       // progressDialog.dismiss();
+                        //binding.swipeToRefreshLayout.setRefreshing(false);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         //TODO add implementation to show error message
-                        binding.swipeToRefreshLayout.setRefreshing(false);
+                       // progressDialog.dismiss();
+                        //binding.swipeToRefreshLayout.setRefreshing(false);
 
                         Toast.makeText(getContext(), "Failed to get data", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        return list;
     }
 
     @Override

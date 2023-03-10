@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
+import com.example.social.CheckBadWords;
 import com.example.social.R;
 import com.example.social.User;
 import com.example.social.Utils.FirebaseUtils.FirebaseUtils;
@@ -30,6 +31,10 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,7 +66,18 @@ public class CreatePostFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentCreatePostBinding.inflate(LayoutInflater.from(getContext()));
         progressDialog = new ProgressDialog(this.getContext());
+        InputStream inputStream;
+        ArrayList<String> badWords = new ArrayList();
+        try {
+            inputStream = getContext().getAssets().open("bad-words.txt");
+            badWords = CheckBadWords.loadBadWordsFromTextfile(inputStream);
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        ArrayList<String> finalBadWords = badWords;
         binding.addPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,12 +87,15 @@ public class CreatePostFragment extends Fragment {
                     progressDialog.setCanceledOnTouchOutside(false);
                     progressDialog.show();
 
-                    if (isPostToxic() == null) {
+                    boolean checkIfVulgar = CheckBadWords.checkBadWords(binding.addPostTextInputEditText.getText().toString().trim(), finalBadWords);
+
+                    if (checkIfVulgar) {
+                        Toast.makeText(getContext(), "Can not post vulgar Language", Toast.LENGTH_SHORT).show();
+                        //  binding.addPostTextInputLayout.setHelperText("Vulgar language detected!");
                         progressDialog.dismiss();
-                    } else if (isPostToxic()) {
-                        progressDialog.dismiss();
-                        Toast.makeText(getContext(), "Your post is toxic, cant post ", Toast.LENGTH_SHORT).show();
+
                     } else {
+
 
                         //add post to Firestore Database
                         firebaseFirestore.collection("Posts")
@@ -102,6 +121,7 @@ public class CreatePostFragment extends Fragment {
 
                     }
                 }
+
             }
         });
 

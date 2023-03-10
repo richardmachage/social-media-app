@@ -9,6 +9,6 @@ public interface PerspectiveService {
     @Headers({
             "Content-Type: application/json",
     })
-    @POST("/commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyAivq0ytBNFns6xVPRMp9500QQcS_vt60Q")
+    @POST("https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyCAMDt4_MMnQzeWEEibmxzLIiJj-Xp27Lk")
     Call<AnalyzeCommentResponse> analyzeComment(@Body AnalyzeCommentRequest request);
 }
